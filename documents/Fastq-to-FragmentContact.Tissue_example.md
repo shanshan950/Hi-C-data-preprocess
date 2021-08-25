@@ -1,4 +1,4 @@
-## The Adrenal Hi-C data is from GEO accession number GSM2322539
+## The Adrenal Hi-C data is from GEO accession number [GSM2322539](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM2322539)
 ### Step1: Download data 
 `for file in SRR4271980 SRR4271981 SRR4271982 SRR4271983;do fastq-dump --split-files $SRR &;done wait`
 ### Step2: run mapping with bowtie (hg19 build)
@@ -54,5 +54,5 @@ $lib/merge_sorted_frag_loop.pl temp.$outputname.loop.samestrand temp.$outputname
 $lib/merge_sorted_frag_loop.pl temp.$outputname.loop.trans > frag_loop.$outputname.trans &
 wait
 ```
-### frag_loop.$outputname.cis and frag_loop.$outputname.trans will be used to run HiCorr
+### frag_loop.$outputname.cis and frag_loop.$outputname.trans will be used to run [HiCorr](https://github.com/JinLabBioinfo/HiCorr)
 ### Check details in https://github.com/shanshan950/prepossessing/blob/master/documents/FragmentContact-to-HiCorr-DeepLoop.example.md 
