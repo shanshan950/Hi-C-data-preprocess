@@ -1,4 +1,4 @@
-## The GM12878 in-situ Hi-C data is from GEO accession number GSE63525 PMID: 25497547
+## The GM12878 in-situ Hi-C data is from GEO accession number [GSE63525](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63525) PMID: 25497547
 ## restriction enzyme: Mbol
 ### Step1: Download data
 #### Download data (fastq-dump)
@@ -12,7 +12,7 @@
 #### rebuild hg19 bowtie2Index with hg19.masked.fa
 `bowtie2-build hg19.masked.fa`
 ### Step2: run mapping with bowtie2 (hg19 build)
-#### To cover more reads overlapping snps, we use the full length to do mapping (the mapping step is same as HiC-Pro(https://github.com/nservant/HiC-Pro))
+#### To cover more reads overlapping snps, we use the full length to do mapping (the mapping step is same as [HiC-Pro](https://github.com/nservant/HiC-Pro))
 #### Edit the path to bowtiepath and path to lib and fragment bed file
 ```
 hg19=Your_hg19_Bowtie2IndexPath/YourIndexPrefix
@@ -33,7 +33,7 @@ mv ${SRR}_R1_hg19.masked.sorted.bam ${SRR}_R1_hg19.masked.bam
 mv ${SRR}_R2_hg19.masked.sorted.bam ${SRR}_R2_hg19.masked.bam
 python $lib/mergeSAM.py -q 0 -t -v -f ${SRR}_R1_hg19.masked.bam -r ${SRR}_R2_hg19.masked.bam -o ${SRR}_hg19.masked.bwt2pairs.bam
 # split bam to two alleles based on snp info
-# Here we use SNPsplit(https://github.com/FelixKrueger/SNPsplit) to split bam files
+# Here we use [SNPsplit](https://github.com/FelixKrueger/SNPsplit) to split bam files
 SNPsplit --snp_file snp.bed ${SRR}_hg19.masked.bwt2pairs.bam --paired --hic 
 ```
 #### Repeat the code above to run all the data
@@ -74,5 +74,5 @@ for genome in G1 G2;do
   wait
 done
 ```
-### frag_loop.G1.cis and frag_loop.G1.trans, frag_loop.G2.cis and frag_loop.G2.trans will be used to run HiCorr
-### Check details in https://github.com/shanshan950/prepossessing/blob/master/documents/FragmentContact-to-HiCorr-DeepLoop.example.md 
+### frag_loop.G1.cis and frag_loop.G1.trans, frag_loop.G2.cis and frag_loop.G2.trans will be used to run [HiCorr](https://github.com/JinLabBioinfo/HiCorr)
+### Check details in [FragmentContact-to-HiCorr-DeepLoop.example.md](https://github.com/shanshan950/prepossessing/blob/master/documents/FragmentContact-to-HiCorr-DeepLoop.example.md) 
