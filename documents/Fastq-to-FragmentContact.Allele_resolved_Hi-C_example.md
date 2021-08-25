@@ -3,10 +3,14 @@
 ### Step1: Download data
 #### Download data (fastq-dump)
 #### Download snp bed file 
-`wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE63nnn/GSE63525/suppl/GSE63525_GM12878_SNPs.txt.gz`
+```
+wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE63nnn/GSE63525/suppl/GSE63525_GM12878_SNPs.txt.gz
+```
 ### reformat snp file to a bed file for processing bams
-`cat GSE63525_GM12878_SNPs.txt.gz | gunzip | sed s/":"/\\t/g | awk '{print "chr"$1 "\t" $2 "\t" $2  "\t" $3"/"$4}' > GSE63525_GM12878_SNPs.reformat.bed`
-`cat GSE63525_GM12878_SNPs.reformat.bed | awk '{print NR "\t" $1 "\t" $2 "\t" "-" "\t" $4}' > snp.bed`
+```
+cat GSE63525_GM12878_SNPs.txt.gz | gunzip | sed s/":"/\\t/g | awk '{print "chr"$1 "\t" $2 "\t" $2  "\t" $3"/"$4}' > GSE63525_GM12878_SNPs.reformat.bed
+cat GSE63525_GM12878_SNPs.reformat.bed | awk '{print NR "\t" $1 "\t" $2 "\t" "-" "\t" $4}' > snp.bed
+```
 #### mask hg19.fa by GSE63525_GM12878_SNPs.reformat.bed
 `bedtools maskfasta -fi hg19.fa -bed GSE63525_GM12878_SNPs.reformat.bed -fo hg19.masked.fa`
 #### rebuild hg19 bowtie2Index with hg19.masked.fa
