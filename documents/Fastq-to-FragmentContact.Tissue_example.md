@@ -55,3 +55,4 @@ $lib/merge_sorted_frag_loop.pl temp.$outputname.loop.trans > frag_loop.$outputna
 wait
 ```
 ### frag_loop.$outputname.cis and frag_loop.$outputname.trans will be used to run HiCorr
+### Check details in https://github.com/shanshan950/prepossessing/blob/master/documents/FragmentContact-to-HiCorr-DeepLoop.example.md 
