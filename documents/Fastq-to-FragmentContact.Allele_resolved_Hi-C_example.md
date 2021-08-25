@@ -75,4 +75,4 @@ for genome in G1 G2;do
 done
 ```
 ### frag_loop.G1.cis and frag_loop.G1.trans, frag_loop.G2.cis and frag_loop.G2.trans will be used to run HiCorr
-
+### Check details in https://github.com/shanshan950/prepossessing/blob/master/documents/FragmentContact-to-HiCorr-DeepLoop.example.md 
