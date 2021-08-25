@@ -9,7 +9,7 @@
 hg19=Your_hg19_BowtieIndexPath/YourIndexPrefix
 hg19Ind=Your_PathTo_hg19.fa.fai
 lib=Path_to_lib
-bed=Path_to_fragbed
+bed=Path_to_fragbed # <chr> <start> <end> <frag_id>
 outputname=Adrenal
 
 for expt in SRR4271980 SRR4271981 SRR4271982 SRR4271983;do
@@ -26,7 +26,6 @@ for expt in SRR4271980 SRR4271981 SRR4271982 SRR4271983;do
   samtools view -u $expt.R2.sam | samtools sort -@ 5 -n -T $expt.R2 -o $expt.R2.sorted.bam  &
   wait
   $lib/pairing_two_SAM_reads.pl <(samtools view $expt.R1.sorted.bam) <(samtools view $expt.R2.sorted.bam) | samtools view -bS -t $hg19Ind -o - - > $expt.bam
-  echo Uniquely mapped read pairs for $expt is `samtools view $expt.bam | wc -l` >> $expt.summary.total.read_count
 done &
 ```
 ### Step3: Process the bam files
@@ -36,6 +35,7 @@ done &
 `samtools merge $outputname.bam SRR4271980.bam SRR4271981.bam SRR4271982.bam SRR4271983.bam`
 #### remove duplicates
 `samtools sort $outputname.bam | samtools view - | $lib/remove_dup_PE_SAM_sorted.pl | samtools view -bS -t $hg19Ind -o - - > $outputname.sorted.nodup.bam `
+`samtools view $outputname.sorted.nodup.bam | cut -f2-8 | $lib/bam_to_temp_HiC.pl > $outputname.temp`
 ### Step4: map reads pair to fragment pairs, 36 is the read length for mapping
 ```
 $lib/reads_2_cis_frag_loop.pl $bed 36 $outputname.loop.inward $outputname.loop.outward $outputname.loop.samestrand summary.frag_loop.read_count $outputname $outputname.temp &
