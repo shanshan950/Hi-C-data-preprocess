@@ -3,7 +3,7 @@ This repository introduces the **step-by-step** analytical pipleine for Hi-C dat
 >Please install HiCorr and DeepLoop in advance.
 >
 >The example documents include mapping step, bowtie or bowtie2 index for hg19/mm10 are needed.
-## In the documents foler, you will find examples for processing:
+## In the documents folder, you will find examples for processing:
 #### [Hi-C (restriction enzyme HindIII) in human Adrenal tissue](https://github.com/shanshan950/Hi-C-data-preprocess/blob/master/documents/Fastq-to-FragmentContact.Tissue_example.md)
 [GSM2322539](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM2322539)
 #### [in-situ Hi-C (restriction enzyme Mbol) in human GM12878 cell line, allele-resolved](https://github.com/shanshan950/Hi-C-data-preprocess/blob/master/documents/Fastq-to-FragmentContact.Allele_resolved_Hi-C_example.md)
