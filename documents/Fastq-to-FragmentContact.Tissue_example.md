@@ -68,7 +68,7 @@ wait
 ### frag_loop.$outputname.cis and frag_loop.$outputname.trans will be used to run [HiCorr](https://github.com/JinLabBioinfo/HiCorr)
 ### Step5: Run HiCorr
 ```
-$Hicorr_path/HiCorr HindIII frag_loop.$outputname.cis and frag_loop.$outputname.trans $outputname hg19 
+$Hicorr_path/HiCorr HindIII frag_loop.$outputname.cis  frag_loop.$outputname.trans $outputname hg19 
 cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
 ```
 ### Step6: Run DeepLoop
