@@ -66,4 +66,10 @@ $lib/merge_sorted_frag_loop.pl temp.$outputname.loop.trans > frag_loop.$outputna
 wait
 ```
 ### frag_loop.$outputname.cis and frag_loop.$outputname.trans will be used to run [HiCorr](https://github.com/JinLabBioinfo/HiCorr)
-### Check details in [FragmentContact-to-HiCorr-DeepLoop.example.md](https://github.com/shanshan950/prepossessing/blob/master/documents/FragmentContact-to-HiCorr-DeepLoop.example.md)
+### Step5: Run HiCorr
+```
+$Hicorr_path HindIII frag_loop.$outputname.cis and frag_loop.$outputname.trans $outputname hg19 
+cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
+```
+### Step6: Run DeepLoop
+
