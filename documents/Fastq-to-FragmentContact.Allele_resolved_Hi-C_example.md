@@ -79,4 +79,8 @@ for genome in G1 G2;do
 done
 ```
 ### frag_loop.G1.cis and frag_loop.G1.trans, frag_loop.G2.cis and frag_loop.G2.trans will be used to run [HiCorr](https://github.com/JinLabBioinfo/HiCorr)
-### Check details in [FragmentContact-to-HiCorr-DeepLoop.example.md](https://github.com/shanshan950/prepossessing/blob/master/documents/FragmentContact-to-HiCorr-DeepLoop.example.md) 
+### Step6: Run HiCorr
+```
+$Hicorr_path/HiCorr DPNII frag_loop.G1.cis frag_loop.G1.trans G1 hg19 
+cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
+```
