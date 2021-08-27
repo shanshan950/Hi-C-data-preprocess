@@ -71,7 +71,8 @@ wait
 ```
 $HiCorrPath/HiCorr HindIII frag_loop.$outputname.cis frag_loop.$outputname.trans $outputname hg19 
 ```
-#### When it's done, the "HiCorr_output/" will include "anchor_2_anchor.loop" files for each chromosome. The file format is
+#### When it's done, the "HiCorr_output/" will include "anchor_2_anchor.loop" files for each chromosome. "HiCorr_output/" will be the input directory for DeepLoop
+#### The file format is
 
 <table><tr><td>anchor_id_1</td><td>anchor_id_2</td> <td>observed_reads_count</td> <td>expected_reads_count</td></tr></table>
 
