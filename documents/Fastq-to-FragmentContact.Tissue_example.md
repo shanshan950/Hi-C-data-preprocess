@@ -77,13 +77,16 @@ $HiCorrPath/HiCorr HindIII frag_loop.$outputname.cis frag_loop.$outputname.trans
 
 #### The ratio will be (observed_reads_count + dummy)/ (expected_reads_count + dummy), we use 5 as the default dummy.
 
-### Step6: check heatmaps from HiCorr
+### Step6: Check heatmaps from HiCorr
 ```
 mkdir plots # In the directory as HiCorr_output
 cd plots
 $HiCorrPath/HiCorr Heatmap chr1 119565703 120357702 ../HiCorr_output/anchor_2_anchor.loop.chr1 hg19 HindIII
 # This will generate 3 png plots in the current directory, "raw.matrix", "expt.matrix" and "ratio.matrix"
 ```
-### Step6: Run DeepLoop
+### Step7: Run DeepLoop
 
 cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
+
+### Step8: Check heatmaps from DeepLoop
+
