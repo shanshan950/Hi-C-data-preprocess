@@ -12,6 +12,7 @@ for file in `ls *_1.fastq`;do echo $file `cat $file | head -2 | tail -1 | wc -c`
 ```
 hg19=Your_hg19_BowtieIndexPath/YourIndexPrefix
 hg19Ind=Your_PathTo_hg19.fa.fai
+HiCorrPath=<where you put HiCorr>
 lib=Path_to_lib
 bed=Path_to_fragbed # <chr> <start> <end> <frag_id>
 outputname=Adrenal
@@ -68,8 +69,21 @@ wait
 ### frag_loop.$outputname.cis and frag_loop.$outputname.trans will be used to run [HiCorr](https://github.com/JinLabBioinfo/HiCorr)
 ### Step5: Run HiCorr
 ```
-$Hicorr_path/HiCorr HindIII frag_loop.$outputname.cis  frag_loop.$outputname.trans $outputname hg19 
-cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
+$HiCorrPath/HiCorr HindIII frag_loop.$outputname.cis frag_loop.$outputname.trans $outputname hg19 
+```
+#### When it's done, the "HiCorr_output/" will include "anchor_2_anchor.loop" files for each chromosome. The file format is
+
+<table><tr><td>anchor_id_1</td><td>anchor_id_2</td> <td>observed_reads_count</td> <td>expected_reads_count</td></tr></table>
+
+#### The ratio will be (observed_reads_count + dummy)/ (expected_reads_count + dummy), we use 5 as the default dummy.
+
+### Step6: check heatmaps from HiCorr
+```
+mkdir plots # In the directory as HiCorr_output
+cd plots
+$HiCorrPath/HiCorr Heatmap chr1 119565703 120357702 ../HiCorr_output/anchor_2_anchor.loop.chr1 hg19 HindIII
+# This will generate 3 png plots in the current directory, "raw.matrix", "expt.matrix" and "ratio.matrix"
 ```
 ### Step6: Run DeepLoop
 
+cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
