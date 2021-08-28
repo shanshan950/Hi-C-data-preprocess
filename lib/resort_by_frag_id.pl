@@ -53,8 +53,8 @@ close(IN);
 close($curr_fh);
 my $file_list = join(" ", @temp_files);
 
-`/mnt/rstor/genetics/JinLab/ssz20/zshanshan/lib/merge_sorted_frag_loop.pl $file_list > temp.$loop_file`;
+`/lab/solexa_weissman/cweng/PlayRoom/Shanshan/lib/merge_sorted_frag_loop.pl $file_list > temp.$loop_file`;
 `mv temp.$loop_file $loop_file`;
-#`rm -r $folder`;
+`rm -rf $folder`;
 
 exit;
