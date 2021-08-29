@@ -62,7 +62,7 @@ for file in $outputname.loop.inward $outputname.loop.outward $outputname.loop.sa
 done
 cat $outputname.loop.trans | $lib/summary_sorted_trans_frag_loop.pl - > temp.$outputname.loop.trans
 wait
-$lib/merge_sorted_frag_loop.pl temp.$outputname.loop.samestrand temp.$outputname.loop.inward temp.$outputname.loop.outward > frag_loop.$outputname.cis &
+$lib/merge_sorted_frag_loop.pl temp.$outputname.loop.samestrand <(cat temp.$outputname.loop.inward | awk '{if($4>1000)print $0}') <(cat temp.$outputname.loop.outward | awk '{if($4>25000)print $0}') > frag_loop.$outputname.cis &
 $lib/merge_sorted_frag_loop.pl temp.$outputname.loop.trans > frag_loop.$outputname.trans &
 wait
 ```
