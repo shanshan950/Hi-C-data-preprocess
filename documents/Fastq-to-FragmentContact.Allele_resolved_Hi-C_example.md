@@ -73,7 +73,7 @@ done
 ### Step5: After running the steps above for each biological bam file, merge fragment pairs from biological replicates
 ```
 for genome in G1 G2;do
-  $lib/merge_sorted_frag_loop.pl <(cat temp.Rep*$genome.loop.samestrand*) <cat temp.Rep*$genome.loop.inward) <cat temp.Rep*$genome.loop.outward) > frag_loop.$genome.cis &
+  $lib/merge_sorted_frag_loop.pl <(cat temp.Rep*$genome.loop.samestrand*) <cat temp.Rep*$genome.loop.inward | awk '{if($4>1000)print $0}') <cat temp.Rep*$genome.loop.outward | awk '{if($4>5000)print $0}') > frag_loop.$genome.cis &
   $lib/merge_sorted_frag_loop.pl <(cat temp.Rep*$genome.loop.trans) > frag_loop.$genome.trans &
   wait
 done
