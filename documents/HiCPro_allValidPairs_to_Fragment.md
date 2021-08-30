@@ -4,6 +4,7 @@ lib=lib/
 validPair=
 fragbed=
 outputname=
+HiCorrPath=
 
 cat $validPair | gunzip | cut -f2-7 | $lib/reads_2_cis_frag_loop.pl $fragbed 36 $outputname.loop.inward $outputname.loop.outward $outputname.loop.samestrand summary.frag_loop.read_count $outputname -
 cat $validPair | gunzip | cut -f2-7 | $lib/reads_2_trans_frag_loop.pl ../test_HiCorr/test_V2/HiCorr/ref/Arima/hg19.Arima.frag.bed 36 $outputname.loop.trans - &
@@ -27,6 +28,7 @@ mv frag_loop.$outputname.trans.tmp frag_loop.$outputname.trans
 ```
 ### Run HiCorr on cis and trans loop
 ```
+$HiCorrPath/HiCorr 
 bash Arima.sh ../../test_HiCorr/test_V2/HiCorr/ref/Arima/ ../../test_HiCorr/test_V2/HiCorr/bin/Arima/ frag_loop.HK2663.cis frag_loop.HK2663.trans HK2663 hg19 &
 
 ```
