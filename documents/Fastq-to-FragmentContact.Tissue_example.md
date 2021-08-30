@@ -7,6 +7,7 @@ for file in SRR4271980 SRR4271981 SRR4271982 SRR4271983;do fastq-dump --split-fi
 #### check read length:
 ```
 for file in `ls *_1.fastq`;do echo $file `cat $file | head -2 | tail -1 | wc -c`; done`` # Different read length, therefore using 36bp for mapping for a fair processing
+# We chose 36bp as read length because the shortest read length for this example is 36bp.
 ```
 #### Edit the path to bowtiepath and path to lib and fragment bed file
 ```
