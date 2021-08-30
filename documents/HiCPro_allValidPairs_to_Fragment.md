@@ -9,8 +9,6 @@ outputname= # your outpuname or sample name
 HiCorrPath= # where you put "HiCorr" file
 DeepLoopPath= # go to DeepLoop/
 DeepLoopBed=$DeepLoopPath/DeepLoop_models/ref/${genome}_${enzyme}_anchor_bed/
-
-
 ```
 ### Map HiCPro.all.valid.pairs to fragment pairs
 ```
@@ -76,5 +74,9 @@ chr=
 start=
 end=
 $lib/generate.raw.HiCorr.DeepLoop.matrix.pl $DeepLoopPath/DeepLoop_models/ref/${genome}_${enzyme}_anchor_bed/${chr}.bed $HiCorrOutputPath/HiCorr_DeepLoop_comb/{$chr}.raw_HiCorr_DeepLoop $chr $start $end ./Plots/$outputname.${chr}_${start}_${end}
-
+# Plor
+for file in raw.matrix HiCorr.matrix DeepLoop.matrix;do
+        $HiCorrPath/bin/plot.heatmap.r Plots/$outputname.${chr}_${start}_${end}.${file}
+done
+ # check the heatmaps in png files
 ```
