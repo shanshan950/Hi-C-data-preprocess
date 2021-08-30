@@ -1,11 +1,17 @@
+### Prepare path and reference files
+```
+lib=lib/ # the path to lib of the Hi-C-data-preprocess 
+validPair= # from HiCPro
+enzyme= # restriction enzyme of the Hi-C experiment
+fragbed= # enzyme fragment bed "frag_1"..., provided in HiCorr reference files, HindIII, DPNII for mm10 and hg19 are provided, other type of reference files could be generated upon request
+outputname= # your outpuname or sample name
+HiCorrPath= # where you put "HiCorr" file
+DeepLoopPath= # go to DeepLoop/prediction/ 
+genome= # hg19/mm10
+
+```
 ### Map HiCPro.all.valid.pairs to fragment pairs
 ```
-lib=lib/
-validPair=
-fragbed=
-outputname=
-HiCorrPath=
-
 cat $validPair | gunzip | cut -f2-7 | $lib/reads_2_cis_frag_loop.pl $fragbed 36 $outputname.loop.inward $outputname.loop.outward $outputname.loop.samestrand summary.frag_loop.read_count $outputname -
 cat $validPair | gunzip | cut -f2-7 | $lib/reads_2_trans_frag_loop.pl ../test_HiCorr/test_V2/HiCorr/ref/Arima/hg19.Arima.frag.bed 36 $outputname.loop.trans - &
 for file in $outputname.loop.inward $outputname.loop.outward $outputname.loop.samestrand;do
@@ -28,24 +34,20 @@ mv frag_loop.$outputname.trans.tmp frag_loop.$outputname.trans
 ```
 ### Run HiCorr on cis and trans loop
 ```
-$HiCorrPath/HiCorr 
-bash Arima.sh ../../test_HiCorr/test_V2/HiCorr/ref/Arima/ ../../test_HiCorr/test_V2/HiCorr/bin/Arima/ frag_loop.HK2663.cis frag_loop.HK2663.trans HK2663 hg19 &
-
+$HiCorrPath/HiCorr ${enzyme} frag_loop.$outputname.cis frag_loop.$outputname.trans $outputname $genome
 ```
 ### Run DeepLoop on HiCorr_output
 ```
 #Check mid-range reads:
 echo `cat HiCorr_output/anchor* | awk '{sum+=$3}END{print sum/2}'` # choose model by this depth
-```
-# go to the prediction/ under DeepLoop
-`cd /PATH_to_DeepLoop/DeepLoop/prediction`
-```
+
+cd $DeepLoopPath
 for i in {1..22} X Y;do
   python3 predict_chromosome.py --full_matrix_dir HiCorr_output/ \
                                 --input_name anchor_2_anchor.loop.chr${i} \
                                 --h5_file DeepLoop_models/CPGZ_trained/50M.h5 \
-                                --out_dir HK2662/DeepLoop/ \
-                                --anchor_dir DeepLoop/ref/hg19_Arima_anchor_bed/  \
+                                --out_dir <DeepLoop output path> \
+                                --anchor_dir DeepLoop_models/ref/${genome]_${enzyme}_anchor_bed/  \
                                 --chromosome chr${i} --small_matrix_size 128  --step_size 128 --dummy 5
 done
 
