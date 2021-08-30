@@ -2,12 +2,14 @@
 ```
 lib=lib/ # the path to lib of the Hi-C-data-preprocess 
 validPair= # from HiCPro
+genome= # hg19/mm10
 enzyme= # restriction enzyme of the Hi-C experiment
 fragbed= # enzyme fragment bed "frag_1"..., provided in HiCorr reference files, HindIII, DPNII for mm10 and hg19 are provided, other type of reference files could be generated upon request
 outputname= # your outpuname or sample name
 HiCorrPath= # where you put "HiCorr" file
-DeepLoopPath= # go to DeepLoop/prediction/ 
-genome= # hg19/mm10
+DeepLoopPath= # go to DeepLoop/
+DeepLoopBed=$DeepLoopPath/DeepLoop_models/ref/${genome}_${enzyme}_anchor_bed/
+
 
 ```
 ### Map HiCPro.all.valid.pairs to fragment pairs
@@ -35,6 +37,8 @@ mv frag_loop.$outputname.trans.tmp frag_loop.$outputname.trans
 ### Run HiCorr on cis and trans loop
 ```
 $HiCorrPath/HiCorr ${enzyme} frag_loop.$outputname.cis frag_loop.$outputname.trans $outputname $genome
+HiCorrOutputPath=`pwd`"/HiCorr_output/"
+DeepLoopOutputPath=`pwd`"/DeepLoop/"
 ```
 ### Run DeepLoop on HiCorr_output
 ```
@@ -43,12 +47,34 @@ echo `cat HiCorr_output/anchor* | awk '{sum+=$3}END{print sum/2}'` # choose mode
 
 cd $DeepLoopPath
 for i in {1..22} X Y;do
-  python3 predict_chromosome.py --full_matrix_dir HiCorr_output/ \
+  python3 predict_chromosome.py --full_matrix_dir $HiCorrOutputPath \
                                 --input_name anchor_2_anchor.loop.chr${i} \
                                 --h5_file DeepLoop_models/CPGZ_trained/50M.h5 \
-                                --out_dir <DeepLoop output path> \
-                                --anchor_dir DeepLoop_models/ref/${genome]_${enzyme}_anchor_bed/  \
+                                --out_dir $DeepLoopOutputPath \
+                                --anchor_dir $DeepLoopPath/DeepLoop_models/ref/${genome}_${enzyme}_anchor_bed/  \
                                 --chromosome chr${i} --small_matrix_size 128  --step_size 128 --dummy 5
 done
+
+```
+### Combine HiCorr_output and DeepLoop output
+```
+cd $HiCorrOutputPath
+dummy=5
+mkdir HiCorr_DeepLoop_comb
+for i in {1..22} X Y;do
+        $lib/pair.HiCorr_DeepLoop.pl HiCorr_output/anchor_2_anchor.loop.chr${i} DeepLoop/chr${i}.denoised.anchor.to.anchor $dummy > HiCorr_DeepLoop_comb/chr${i}.raw_HiCorr_DeepLoop
+done &
+```
+##### The format for chr${i}.raw_expt_DeepLoop is 
+<table><tr><td>anchor_id_1</td> <td>anchor_id_2</td> <td>observed_reads_count</td> <td>HiCorr_normalized</td> <td>DeepLoop output</td></tr>  </table>
+
+### Plot heatmaps from HiCorr_output and DeepLoop output given chr start end and reference bed file
+```
+cd $HiCorrOutputPath
+mkdir Plots
+chr=
+start=
+end=
+$lib/generate.raw.HiCorr.DeepLoop.matrix.pl $DeepLoopPath/DeepLoop_models/ref/${genome}_${enzyme}_anchor_bed/${chr}.bed $HiCorrOutputPath/HiCorr_DeepLoop_comb/{$chr}.raw_HiCorr_DeepLoop $chr $start $end ./Plots/$outputname.${chr}_${start}_${end}
 
 ```
