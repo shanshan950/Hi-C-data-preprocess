@@ -10,4 +10,4 @@ This repository introduces the **step-by-step** analytical pipleine for Hi-C dat
 [GSE63525](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63525) (PMID: 25497547)
 #### [sn-m3C-seq(restriction enzyme DpNII) processed contact pairs in human Astro cell type](https://github.com/shanshan950/Hi-C-data-preprocess/blob/master/documents/Processed_readsPair-to-FragmentContact.sn-m3C-seq_example.md)
 [GSE130711](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE130711) (PMID: 31501549)
-
+#### [Take HiCPro "allValidPairs" to run HiCorr and DeepLoop](https://github.com/shanshan950/Hi-C-data-preprocess/blob/master/documents/HiCPro_allValidPairs_to_Fragment.md)
