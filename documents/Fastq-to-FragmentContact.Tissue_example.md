@@ -86,11 +86,36 @@ cd plots
 $HiCorrPath/HiCorr Heatmap chr1 119565703 120357702 ../HiCorr_output/anchor_2_anchor.loop.chr1 hg19 HindIII
 # This will generate 3 png plots in the current directory, "raw.matrix", "expt.matrix" and "ratio.matrix"
 ```
-### Step7: Check cis-2M reads to help choosing depth-matched DeepLoop model
-
+### Step7: Run DeepLoop
+#### Check cis-2M reads to help choosing depth-matched DeepLoop model
+```
 cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
-
-Go to [DeepLoop](https://github.com/JinLabBioinfo/DeepLoop) to continue
-
+```
+Go to [DeepLoop](https://github.com/JinLabBioinfo/DeepLoop) for more parameter description
+```
+HiCorr_path=<Path to HiCorr_output>
+DeepLoop_outPath=
+chr=chr11
+python3 DeepLoop/prediction/predict_chromosome.py --full_matrix_dir $HiCorr_path/ \
+                                              --input_name anchor_2_anchor.loop.$chr.p_val \
+                                              --h5_file DeepLoop/DeepLoop_models/CPGZ_trained/LoopDenoise.h5 \
+                                              --out_dir $DeepLoop_outPath/ \
+                                              --anchor_dir DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/ \
+                                              --chromosome $chr \
+                                              --small_matrix_size 128 \
+                                              --step_size 128 \
+                                              --dummy 5 \
+                                              --val_cols obs exp pval
+```
+### Step8: Visualize Heatmaps
+```
+chr=chr1
+start=119457772
+end=120457772
+outplot="./test"
+./DeepLoop/lib/generate.matrix.from_HiCorr.pl DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/$chr.bed $HiCorr_path/anchor_2_anchor.loop.$chr $chr $start $end ./${chr}_${start}_${end}
+./DeepLoop/lib/generate.matrix.from_DeepLoop.pl DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/$chr.bed $DeepLoop_outPath/$chr.denoised.anchor.to.anchor $chr $start $end ./${chr}_${start}_${end}
+./DeepLoop/lib/plot.multiple.r $outplot 1 3 ${chr}_${start}_${end}.raw.matrix ${chr}_${start}_${end}.ratio.matrix ${chr}_${start}_${end}.denoise.matrix
+```
 
 
