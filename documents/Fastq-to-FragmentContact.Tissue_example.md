@@ -98,7 +98,7 @@ DeepLoop_outPath=
 chr=chr11
 python3 DeepLoop/prediction/predict_chromosome.py --full_matrix_dir $HiCorr_path/ \
                                               --input_name anchor_2_anchor.loop.$chr.p_val \
-                                              --h5_file DeepLoop/DeepLoop_models/CPGZ_trained/LoopDenoise.h5 \
+                                              --h5_file DeepLoop/DeepLoop_models/CPGZ_trained/8.5M.h5 \
                                               --out_dir $DeepLoop_outPath/ \
                                               --anchor_dir DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/ \
                                               --chromosome $chr \
