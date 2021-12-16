@@ -63,7 +63,11 @@ for file in $outputname.loop.inward $outputname.loop.outward $outputname.loop.sa
 done
 cat $outputname.loop.trans | $lib/summary_sorted_trans_frag_loop.pl - > temp.$outputname.loop.trans
 wait
-$lib/merge_sorted_frag_loop.pl temp.$outputname.loop.samestrand <(cat temp.$outputname.loop.inward | awk '{if($4>1000)print $0}') <(cat temp.$outputname.loop.outward | awk '{if($4>25000)print $0}') > frag_loop.$outputname.cis &
+$lib/merge_sorted_frag_loop.pl temp.$outputname.loop.samestrand > frag_loop.$outputname.samestrand &
+$lib/merge_sorted_frag_loop.pl <(cat temp.$outputname.loop.inward | awk '{if($4>1000)print $0}') > frag_loop.$outputname.inward &
+$lib/merge_sorted_frag_loop.pl <(cat temp.$outputname.loop.outward | awk '{if($4>25000)print $0}') > frag_loop.$outputname.outward &
+wait
+$lib/merge_sorted_frag_loop.pl frag_loop.$outputname.samestrand frag_loop.$outputname.inward frag_loop.$outputname.outward > frag_loop.$outputname.cis &
 $lib/merge_sorted_frag_loop.pl temp.$outputname.loop.trans > frag_loop.$outputname.trans &
 wait
 ```
@@ -72,7 +76,8 @@ wait
 ```
 $HiCorrPath/HiCorr HindIII frag_loop.$outputname.cis frag_loop.$outputname.trans $outputname hg19 
 ```
-#### When it's done, the "HiCorr_output/" will include "anchor_2_anchor.loop" files for each chromosome. "HiCorr_output/" will be the input directory for DeepLoop
+#### This takes a few hours, when it's done, the "HiCorr_output/" will appear where you run the command above. It contains "anchor_2_anchor.loop" files for each chromosome. 
+#### "HiCorr_output/" will be the input directory for DeepLoop
 #### The file format is
 
 <table><tr><td>anchor_id_1</td><td>anchor_id_2</td> <td>observed_reads_count</td> <td>expected_reads_count</td></tr></table>
@@ -92,13 +97,17 @@ $HiCorrPath/HiCorr Heatmap chr1 119565703 120357702 ../HiCorr_output/anchor_2_an
 cat `ls HiCorr_output/* | grep -v p_val` | awk '{sum+=$3}END{print sum/2}' # check reads within 2Mb
 ```
 Go to [DeepLoop](https://github.com/JinLabBioinfo/DeepLoop) for more parameter description
+#### Run DeepLoop on chr1 using 8.5M model
 ```
+# define some essential variables/parameters
 HiCorr_path=<Path to HiCorr_output>
-DeepLoop_outPath=
-chr=chr11
+DeepLoop_outPath=<Where you want to put DeepLoop output>
+chr=chr1 
+modelDepth="8.5M"
+# Run DeepLoop
 python3 DeepLoop/prediction/predict_chromosome.py --full_matrix_dir $HiCorr_path/ \
                                               --input_name anchor_2_anchor.loop.$chr.p_val \
-                                              --h5_file DeepLoop/DeepLoop_models/CPGZ_trained/8.5M.h5 \
+                                              --h5_file DeepLoop/DeepLoop_models/CPGZ_trained/${modelDepth}.h5 \
                                               --out_dir $DeepLoop_outPath/ \
                                               --anchor_dir DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/ \
                                               --chromosome $chr \
@@ -109,6 +118,8 @@ python3 DeepLoop/prediction/predict_chromosome.py --full_matrix_dir $HiCorr_path
 ```
 ### Step8: Visualize Heatmaps
 ```
+HiCorr_path=<Path to HiCorr_output>
+DeepLoop_outPath=<Where you want to put DeepLoop output>
 chr=chr1
 start=119457772
 end=120457772
@@ -117,5 +128,5 @@ outplot="./test"
 ./DeepLoop/lib/generate.matrix.from_DeepLoop.pl DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/$chr.bed $DeepLoop_outPath/$chr.denoised.anchor.to.anchor $chr $start $end ./${chr}_${start}_${end}
 ./DeepLoop/lib/plot.multiple.r $outplot 1 3 ${chr}_${start}_${end}.raw.matrix ${chr}_${start}_${end}.ratio.matrix ${chr}_${start}_${end}.denoise.matrix
 ```
-
+![sample heatmaps](https://github.com/JinLabBioinfo/DeepLoop/blob/master/images/test.plot.png)
 
