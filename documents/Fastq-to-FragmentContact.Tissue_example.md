@@ -123,10 +123,10 @@ DeepLoop_outPath=<Where you want to put DeepLoop output>
 chr=chr1
 start=119457772
 end=120457772
-outplot="./test"
+outplot=Adrenal.chr1_119457772_120457772.DeepLoop
 ./DeepLoop/lib/generate.matrix.from_HiCorr.pl DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/$chr.bed $HiCorr_path/anchor_2_anchor.loop.$chr $chr $start $end ./${chr}_${start}_${end}
 ./DeepLoop/lib/generate.matrix.from_DeepLoop.pl DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/$chr.bed $DeepLoop_outPath/$chr.denoised.anchor.to.anchor $chr $start $end ./${chr}_${start}_${end}
 ./DeepLoop/lib/plot.multiple.r $outplot 1 3 ${chr}_${start}_${end}.raw.matrix ${chr}_${start}_${end}.ratio.matrix ${chr}_${start}_${end}.denoise.matrix
 ```
-![sample heatmaps](https://github.com/JinLabBioinfo/DeepLoop/blob/master/images/test.plot.png)
+![sample heatmaps](https://github.com/shanshan950/Hi-C-data-preprocess/blob/master/png/Adrenal.chr1_119457772_120457772.DeepLoop.png)
 
