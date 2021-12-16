@@ -128,5 +128,6 @@ outplot=Adrenal.chr1_119457772_120457772.DeepLoop
 ./DeepLoop/lib/generate.matrix.from_DeepLoop.pl DeepLoop/DeepLoop_models/ref/hg19_HindIII_anchor_bed/$chr.bed $DeepLoop_outPath/$chr.denoised.anchor.to.anchor $chr $start $end ./${chr}_${start}_${end}
 ./DeepLoop/lib/plot.multiple.r $outplot 1 3 ${chr}_${start}_${end}.raw.matrix ${chr}_${start}_${end}.ratio.matrix ${chr}_${start}_${end}.denoise.matrix
 ```
+#### raw, HiCorr and DeepLoop
 ![sample heatmaps](https://github.com/shanshan950/Hi-C-data-preprocess/blob/master/png/Adrenal.chr1_119457772_120457772.DeepLoop.png)
 
