@@ -1,9 +1,11 @@
 ```
-#!/bin/bash
+# specifiy the paths below
+#################################################
 lib=./lib
 bed=../test_HiCorr/test_V2/HiCorr/ref/Arima/hg19
 allValidPairs=<your allValidPairs.gz file>
 name=<output name>
+#################################################
 
 cat $allValidPairs | gunzip | cut -f2-7 | $lib/reads_2_trans_frag_loop.pl $bed 36 $name.loop.trans - &
 cat $allValidPairs | gunzip | cut -f2-7 | $lib/reads_2_cis_frag_loop.pl $bed 36 $name.loop.inward $name.loop.outward $name.loop.samestrand summary.frag_loop.read_count $name - &
